@@ -1,0 +1,12 @@
+Project level
+TODO edit README
+
+
+App level
+TODO add setup script
+TODO add data preview graphs
+
+
+
+Analysis
+TODO save distribution of areas
