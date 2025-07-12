@@ -35,6 +35,7 @@ from pathviewer import PathViewer
 from datatable import DataTable
 from datagraph import DataGraph
 from analyze import AnalyzeBox
+from results import Results
 
 from reader import LinkamDataReader
 
@@ -108,6 +109,7 @@ class Gui:
         self.data_table = DataTable(self.right)
         self.data_graph = DataGraph(self.right, self.frame_changed)
         self.analyze_box = AnalyzeBox(self.right)
+        self.results = Results(self.right)
 
 
         self.config_event_entries()
