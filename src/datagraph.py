@@ -18,6 +18,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class DataGraph(DataBox):
     """ Data graph for visualizing temperature"""
 
+    GRAPH_COLOR = "#0077b6"
+
     def __init__(self, root, on_dot_click: callable):
         super().__init__(root, "Temperature")
 
@@ -53,10 +55,10 @@ class DataGraph(DataBox):
 
 
         # Plot line
-        self.ax.plot(frames, temperature_data, color="#0077b6", linewidth=2)
+        self.ax.plot(frames, temperature_data, color=DataGraph.GRAPH_COLOR, linewidth=2)
 
         # Plot dots with picker enabled
-        self.dot_artists = self.ax.scatter(frames, temperature_data, color="#0077b6", s=30, picker=5)
+        self.dot_artists = self.ax.scatter(frames, temperature_data, color=DataGraph.GRAPH_COLOR, s=30, picker=5)
 
         # Set axis limits and labels
         self.ax.set_xlim(0, max(frames) if frames else 1)
