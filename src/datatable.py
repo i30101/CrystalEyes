@@ -25,6 +25,8 @@ class DataTable(DataBox):
         self.box.grid_columnconfigure(1, weight=0)
         self.box.grid_columnconfigure(2, weight=0)
         self.box.grid_columnconfigure(3, weight=0)
+        self.box.grid_columnconfigure(4, weight=0)
+        self.box.grid_columnconfigure(5, weight=0)
 
         self.LABEL_WIDTH = 12
         self.ENTRY_WIDTH = 6
@@ -43,6 +45,15 @@ class DataTable(DataBox):
         self.frames_entry = ttk.Entry(self.box, textvariable=self.frames, state="readonly", width=self.ENTRY_WIDTH)
         self.frames_entry.grid(row=0, column=3, padx=0, pady=5, sticky="ew")
 
+        # ramp number
+        self.ramp = tk.IntVar()
+        self.ramp_label = ttk.Label(self.box, text="Ramp", width=self.LABEL_WIDTH)
+        self.ramp_label.grid(row=0, column=4, padx=(30, 0), pady=5, sticky="w")
+        self.ramp_entry = ttk.Entry(self.box, textvariable=self.ramp, state="readonly", width=self.ENTRY_WIDTH)
+        self.ramp_entry.grid(row=0, column=5, padx=0, pady=5, sticky="ew")
+
+
+
         # temperature
         self.temperature = tk.DoubleVar()
         self.temperature_label = ttk.Label(self.box, text="Temp (°C)", width=self.LABEL_WIDTH)
@@ -60,16 +71,9 @@ class DataTable(DataBox):
         # temperature rate
         self.rate = tk.DoubleVar()
         self.rate_label = ttk.Label(self.box, text="Rate (°C/min)", width=self.LABEL_WIDTH)
-        self.rate_label.grid(row=2, column=0, padx=0, pady=5, sticky="w")
+        self.rate_label.grid(row=1, column=4, padx=(30, 0), pady=5, sticky="w")
         self.rate_entry = ttk.Entry(self.box, textvariable=self.rate, state="readonly", width=self.ENTRY_WIDTH)
-        self.rate_entry.grid(row=2, column=1, padx=0, pady=5, sticky="ew")
-
-        # ramp number
-        self.ramp = tk.IntVar()
-        self.ramp_label = ttk.Label(self.box, text="Ramp", width=self.LABEL_WIDTH)
-        self.ramp_label.grid(row=2, column=2, padx=(30, 0), pady=5, sticky="w")
-        self.ramp_entry = ttk.Entry(self.box, textvariable=self.ramp, state="readonly", width=self.ENTRY_WIDTH)
-        self.ramp_entry.grid(row=2, column=3, padx=0, pady=5, sticky="ew")
+        self.rate_entry.grid(row=1, column=5, padx=0, pady=5, sticky="ew")
 
 
 
