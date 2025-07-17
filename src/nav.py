@@ -50,6 +50,12 @@ class Nav1(ttk.Frame):
         self.clear_button = ttk.Button(self, text="Clear Media")
         self.clear_button.grid(row=0, column=1, padx=Variables.PAD_NOPAD, pady=10)
 
+        self.filepath = tk.StringVar()
+        self.filepath_label = ttk.Label(self, text="Opened file:")
+        self.filepath_label.grid(row=0, column=2, padx=(15, 0), pady=10)
+        self.filepath_entry = ttk.Entry(self, textvariable=self.filepath, state="readonly", width=90)
+        self.filepath_entry.grid(row=0, column=3, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
+
 
 
 class Nav2(ttk.Frame):
