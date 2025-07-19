@@ -31,7 +31,6 @@ from console import Console
 from options import Options
 
 # data boxes
-from pathviewer import PathViewer
 from datatable import DataTable
 from datagraph import DataGraph
 from analyze import AnalyzeBox
@@ -105,7 +104,7 @@ class Gui:
 
 
         # ################ DATA BOXES ################ #
-        self.path_viewer = PathViewer(self.right)
+        # self.path_viewer = PathViewer(self.right)
         self.data_table = DataTable(self.right)
         self.data_graph = DataGraph(self.right, self.frame_changed)
         self.analyze_box = AnalyzeBox(self.right)
@@ -225,7 +224,7 @@ class Gui:
 
         self.media.show_media(self.linkam_data_file.raw_images)
 
-        self.path_viewer.set_filepath(self.linkam_data_file.filepath)
+        self.nav1.set_filepath(self.linkam_data_file.filepath)
 
         self.data_graph.update_graph(self.linkam_data_file.temperatures)
 
@@ -239,7 +238,7 @@ class Gui:
         self.media.clear_media()
         self.data_table.clear_data()
         self.data_graph.clear_graph()
-        self.path_viewer.clear_filepath()
+        self.nav1.clear_filepath()
 
         self.console.update("Media cleared")
 
