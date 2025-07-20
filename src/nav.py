@@ -56,6 +56,17 @@ class Nav1(ttk.Frame):
         self.filepath_entry = ttk.Entry(self, textvariable=self.filepath, state="readonly", width=90)
         self.filepath_entry.grid(row=0, column=3, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
 
+    def set_filepath(self, filepath: str):
+        """ Sets the filepath in the entry box """
+        self.filepath.set(filepath)
+        self.filepath_entry.config(state="readonly")
+
+
+    def clear_filepath(self):
+        """ Clears the filepath in the entry box """
+        self.filepath.set("")
+        self.filepath_entry.config(state="readonly")
+
 
 
 class Nav2(ttk.Frame):
