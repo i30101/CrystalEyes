@@ -185,6 +185,14 @@ class Gui:
         self.analyze_box.analyze_button.config(command=self.analyze)
         self.analyze_box.export_button.config(command=self.analyze_and_export)
 
+        # results viewer configs
+        self.results.average_area_button.config(command=self.average_area)
+        self.results.area_distribution_button.config(command=self.area_distribution)
+        self.results.density_button.config(command=self.density)
+        self.results.coverage_button.config(command=self.coverage)
+        self.results.ratio_button.config(command=self.ratio)
+        self.results.contours_button.config(command=self.contours)
+
 
 
 
@@ -204,6 +212,9 @@ class Gui:
 
         self.data_table.set_data(*self.linkam_data_file.get_data(next_frame))
         self.media.media_viewer.to_frame(next_frame)
+
+        if self.linkam_data_file.data is not None:
+            self.area_distribution()
 
 
 
@@ -472,6 +483,86 @@ class Gui:
         )
 
         return True
+
+
+    # ################################ RESULTS BOX METHODS ################################ #
+
+    def average_area(self):
+        """ User wants to see average area graph """
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.line(self.linkam_data_file.data[0], "Average Area")
+
+
+    def area_distribution(self):
+        """ User wants to see area distribution histogram """
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.histogram(self.linkam_data_file.image_areas[self.media.media_viewer.current_frame.get()], "Area Distribution")
+
+
+    def density(self):
+        """ User wants to see density graph """
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.line(self.linkam_data_file.data[4], "Density")
+
+
+    def coverage(self):
+        """ User wants to see coverage graph """
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.line(self.linkam_data_file.data[5], "Coverage")
+
+
+    def ratio(self):
+        """ User wants to see side ratio graph """
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.line(self.linkam_data_file.data[6], "Side Ratio")
+
+
+    def contours(self):
+        """ User wants to see number of contours graph """
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.line(self.linkam_data_file.data[7], "Number of Contours")
 
 
     def analyze_and_export(self):

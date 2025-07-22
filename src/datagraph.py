@@ -68,7 +68,7 @@ class DataGraph(DataBox):
         self.canvas.draw()
 
     def clear_graph(self):
-        """Clear the graph."""
+        """Clear the graph"""
         self.ax.clear()
         self.canvas.draw()
         self.temperature_data = []
