@@ -184,6 +184,18 @@ class Gui:
         )
         self.analyze_box.analyze_button.config(command=self.analyze)
         self.analyze_box.export_button.config(command=self.analyze_and_export)
+        self.analyze_box.bin_decrease.config(
+            command=lambda: self.analyze_box.bins.set(self.analyze_box.bins.get() - 1)
+        )
+        self.analyze_box.bins.trace_add(
+            'write',
+            self.bins_updated
+        )
+        self.analyze_box.bin_increase.config(
+            command=lambda: self.analyze_box.bins.set(self.analyze_box.bins.get() + 1)
+        )
+
+
 
         # results viewer configs
         self.results.average_area_button.config(command=self.average_area)
@@ -483,6 +495,23 @@ class Gui:
         )
 
         return True
+
+    def bins_updated(self, *_):
+        """ Number of bins was updated """
+
+        try:
+            self.results.bins = self.analyze_box.bins.get()
+        except (ValueError, tk.TclError):
+            self.console.error("non-integer character in bin input")
+            return
+
+        if self.analyze_box.bins.get() < 1:
+            self.analyze_box.bins.set(1)
+
+        if self.linkam_data_file is None or self.linkam_data_file.data is None:
+            return
+
+        self.area_distribution()
 
 
     # ################################ RESULTS BOX METHODS ################################ #

@@ -52,4 +52,17 @@ class AnalyzeBox(DataBox):
         self.export_button = ttk.Button(self.box, text="Export")
         self.export_button.grid(row=0, column=5, padx=(20, 0), pady=5, sticky="ew")
 
-        # TODO add button for bins
+
+        # bin controls
+        self.bin_label = ttk.Label(self.box, text="Bins:", width=4)
+        self.bin_label.grid(row=0, column=6, padx=(30, 0), pady=5, sticky="w")
+
+        self.bin_decrease = ttk.Button(self.box, text="-", width=2)
+        self.bin_decrease.grid(row=0, column=7, padx=(10, 0), pady=5, sticky="ew")
+
+        self.bins = tk.IntVar(value=10)
+        self.bin_entry = ttk.Entry(self.box, textvariable=self.bins, width=3, justify="center")
+        self.bin_entry.grid(row=0, column=8, padx=(10, 0), pady=5, sticky="ew")
+
+        self.bin_increase = ttk.Button(self.box, text="+", width=2)
+        self.bin_increase.grid(row=0, column=9, padx=(10, 0), pady=5, sticky="ew")

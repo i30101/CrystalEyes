@@ -18,7 +18,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class DataGraph(DataBox):
     """ Data graph for visualizing temperature"""
 
-    GRAPH_COLOR = "#0077b6"
+    GRAPH_COLOR = "#00b4d8"
 
     def __init__(self, root, on_dot_click: callable):
         super().__init__(root, "Temperature")

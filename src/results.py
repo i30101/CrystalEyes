@@ -21,10 +21,12 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 class Results(DataBox):
     """ Visualizer for displaying data """
 
-    GRAPH_COLOR = "#ff6d6d"
+    GRAPH_COLOR = "#2a9d8f"
 
     def __init__(self, root):
         super().__init__(root, "Analysis Results")
+
+        self.bins = 10
 
         # control buttons
         self.buttons_frame = ttk.Frame(self.box)
@@ -34,7 +36,7 @@ class Results(DataBox):
         self.area_distribution_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
 
         self.average_area_button = ttk.Button(self.buttons_frame, text="Average Area")
-        self.average_area_button.pack(side="left", pady=Variables.PAD_NOPAD)
+        self.average_area_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
 
         self.density_button = ttk.Button(self.buttons_frame, text="Density")
         self.density_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
@@ -72,14 +74,13 @@ class Results(DataBox):
 
         # plot line
         self.ax.plot(frames, y, color=Results.GRAPH_COLOR, linewidth=2)
+        self.ax.scatter(frames, y, color=Results.GRAPH_COLOR, s=30, picker=5)
 
         self.ax.set_xlim(0, max(frames) if frames else 1)
         if y:
             self.ax.set_ylim(min(y) * 0.9, max(y) * 1.1)
 
         self.canvas.draw()
-
-        # TODO add scatter points
 
 
     def histogram(self, data: list[float], label: str):
@@ -91,7 +92,7 @@ class Results(DataBox):
         self.ax.set_ylabel("Frequency")
 
         # plot histogram
-        self.ax.hist(data, bins=20, color=Results.GRAPH_COLOR)
+        self.ax.hist(data, bins=self.bins, color=Results.GRAPH_COLOR)
 
         if data:
             self.ax.set_xlim(min(data) * 0.9, max(data) * 1.1)

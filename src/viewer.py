@@ -99,7 +99,7 @@ class MediaViewer(MediaContainer):
         next_img = Image.open(self.NEXT)
         self.next_img_tk = ImageTk.PhotoImage(next_img)
 
-        self.DELAY = 100
+        self.DELAY = 200
         self.BUTTON_PADDING = 4
         self.DEFAULT_DURATION = 60
 
