@@ -51,3 +51,5 @@ class AnalyzeBox(DataBox):
         # export button
         self.export_button = ttk.Button(self.box, text="Export")
         self.export_button.grid(row=0, column=5, padx=(20, 0), pady=5, sticky="ew")
+
+        # TODO add button for bins

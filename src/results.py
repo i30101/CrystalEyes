@@ -30,11 +30,11 @@ class Results(DataBox):
         self.buttons_frame = ttk.Frame(self.box)
         self.buttons_frame.pack(fill="x", pady=Variables.NOPAD_PAD)
 
-        self.average_area_button = ttk.Button(self.buttons_frame, text="Average Area")
-        self.average_area_button.pack(side="left", pady=Variables.PAD_NOPAD)
-
         self.area_distribution_button = ttk.Button(self.buttons_frame, text="Area Distribution")
         self.area_distribution_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
+
+        self.average_area_button = ttk.Button(self.buttons_frame, text="Average Area")
+        self.average_area_button.pack(side="left", pady=Variables.PAD_NOPAD)
 
         self.density_button = ttk.Button(self.buttons_frame, text="Density")
         self.density_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
@@ -79,6 +79,8 @@ class Results(DataBox):
 
         self.canvas.draw()
 
+        # TODO add scatter points
+
 
     def histogram(self, data: list[float], label: str):
         """ Plots histogram """
@@ -89,7 +91,7 @@ class Results(DataBox):
         self.ax.set_ylabel("Frequency")
 
         # plot histogram
-        self.ax.hist(data, bins=20, color=Results.GRAPH_COLOR, edgecolor='black')
+        self.ax.hist(data, bins=20, color=Results.GRAPH_COLOR)
 
         if data:
             self.ax.set_xlim(min(data) * 0.9, max(data) * 1.1)
