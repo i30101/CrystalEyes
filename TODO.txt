@@ -4,5 +4,4 @@ TODO edit README
 
 App level
 TODO add setup script
-
-
+TODO update options filepath
