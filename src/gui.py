@@ -137,6 +137,7 @@ class Gui:
         # tab control configs
         self.nav1.open_file_button.config(command=self.open_file)
         self.nav1.clear_button.config(command=self.clear_media)
+        self.nav1.export_frame.config(command=self.export_current_frame)
 
         # tab 2 configs
         self.nav2.reset_scale_button.config(command=self.reset_scale)
@@ -265,6 +266,35 @@ class Gui:
 
         self.console.update("Media cleared")
 
+
+    def export_current_frame(self):
+        """ Export current frame """
+
+        if self.linkam_data_file is None:
+            self.console.error("no LDF file loaded")
+            return
+
+        export_directory = (self.nav3.export_path.get() + "/" +
+                            self.linkam_data_file.filepath[ : self.linkam_data_file.filepath.rfind(".ldf")] + "/")
+
+        os.makedirs(export_directory, exist_ok=True)
+
+        current_frame_index = self.media.media_viewer.current_frame.get()
+
+        if self.linkam_data_file.processed_images:
+            current_frame = self.linkam_data_file.processed_images[current_frame_index]
+        else:
+            current_frame = self.linkam_data_file.raw_images[current_frame_index]
+
+        pil_img = Image.fromarray(current_frame)
+
+        pil_img.save(os.path.join(export_directory, f"frame_{current_frame_index}.jpg"), format="JPEG")
+
+        self.console.update(f"Frame export to {export_directory} successful")
+
+
+
+    # TODO put these in the right place
 
     def theme_updated(self):
         """ Theme was updated """
@@ -397,11 +427,11 @@ class Gui:
         """ User wants to export data """
 
         if self.linkam_data_file is None:
-            self.console.error("No LDF file loaded")
+            self.console.error("no LDF file loaded")
             return
 
         if not self.linkam_data_file.processed_images:
-            self.console.error("File not analyzed yet")
+            self.console.error("file not analyzed yet")
 
         export_directory = (self.nav3.export_path.get() + "/" +
                             self.linkam_data_file.filepath[ : self.linkam_data_file.filepath.rfind(".ldf")] + "/")
@@ -423,7 +453,7 @@ class Gui:
             os.makedirs(raw_dir, exist_ok=True)
             for i, img in enumerate(self.linkam_data_file.raw_images):
                 pil_img = Image.fromarray(img)
-                pil_img.save(os.path.join(raw_dir, f"raw_{i:04d}.jpg"), "JPEG")
+                pil_img.save(os.path.join(raw_dir, f"raw_{self.linkam_data_file.frame_numbers[i]:04d}.jpg"), "JPEG")
 
         if self.nav3.processed_images.get():
             # export processed images to directory "processed"
@@ -431,7 +461,7 @@ class Gui:
             os.makedirs(processed_dir, exist_ok=True)
             for i, img in enumerate(self.linkam_data_file.processed_images):
                 pil_img = Image.fromarray(img)
-                pil_img.save(os.path.join(processed_dir, f"processed_{i:04d}.jpg"), "JPEG")
+                pil_img.save(os.path.join(processed_dir, f"processed_{self.linkam_data_file.frame_numbers[i]:04d}.jpg"), "JPEG")
 
         self.console.update(f"Data export to {export_directory} successful")
 
