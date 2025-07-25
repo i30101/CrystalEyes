@@ -95,7 +95,7 @@ class Results(DataBox):
         self.ax.hist(data, bins=self.bins, color=Results.GRAPH_COLOR)
 
         if data:
-            self.ax.set_xlim(min(data) * 0.9, max(data) * 1.1)
+            self.ax.set_xlim(min(data), max(data))
 
         self.canvas.draw()
 
