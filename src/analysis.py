@@ -13,6 +13,7 @@ import math
 import cv2
 import numpy as np
 from cellpose import models
+import random
 
 from variables import Variables
 
@@ -70,7 +71,15 @@ class Analysis:
             ratios_sum += ratio
 
             # draw contour
-            cv2.drawContours(processed_image, [contour], -1, color=(0, 0, 0, 100), thickness=cv2.FILLED)
+            blue = random.randint(100, 255)
+            random_color = (
+                random.randint(0, blue // 2),
+                random.randint(0, blue // 2),
+                blue,
+                100
+            )
+            cv2.drawContours(processed_image, [contour], -1, color=random_color, thickness=cv2.FILLED)
+            # cv2.drawContours(processed_image, [box], -1, color=(255, 0, 0, 100), thickness=2)
 
         # number of contours
         num_contours = len(contours)
