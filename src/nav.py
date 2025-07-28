@@ -53,8 +53,11 @@ class Nav1(ttk.Frame):
         self.filepath = tk.StringVar()
         self.filepath_label = ttk.Label(self, text="Opened file:")
         self.filepath_label.grid(row=0, column=2, padx=(15, 0), pady=10)
-        self.filepath_entry = ttk.Entry(self, textvariable=self.filepath, state="readonly", width=90)
+        self.filepath_entry = ttk.Entry(self, textvariable=self.filepath, state="readonly", width=70)
         self.filepath_entry.grid(row=0, column=3, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
+
+        self.export_frame = ttk.Button(self, text="Export Current Frame")
+        self.export_frame.grid(row=0, column=4, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
 
     def set_filepath(self, filepath: str):
         """ Sets the filepath in the entry box """
@@ -140,6 +143,9 @@ class Nav3(ttk.Frame):
 
         self.download_button = ttk.Button(self, text="Save Data")
         self.download_button.grid(row=0, column=5, padx=Variables.PAD_NOPAD, pady=10)
+
+        self.graph_button = ttk.Button(self, text="Export Graphs")
+        self.graph_button.grid(row=0, column=6, padx=Variables.PAD_NOPAD, pady=10)
 
 
 
