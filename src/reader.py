@@ -109,6 +109,7 @@ class LinkamDataReader:
 
         return LinkamDataFile(
             file=file_name,
+            frames=list(range(0, len(images))),
             ramp=ramps,
             temp=temperatures,
             temp_limit=limits,
