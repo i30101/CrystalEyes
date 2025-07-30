@@ -19,6 +19,7 @@ class LinkamDataFile:
 
     def __init__(self,
                  file: str,
+                 frames: list[int],
                  ramp: list[int],
                  temp: list[float],
                  temp_limit: list[float],
@@ -26,6 +27,7 @@ class LinkamDataFile:
                  raw: list[np.ndarray]):
         """ Linkam Data File object """
         self.filepath = file
+        self.frame_numbers = frames
         self.ramps = ramp
         self.temperatures = temp
         self.temperature_limits = temp_limit
@@ -56,6 +58,7 @@ class LinkamDataFile:
 
         trimmed_file = LinkamDataFile(
             file=self.filepath,
+            frames=self.frame_numbers[start:end],
             ramp=self.ramps[start:end],
             temp=self.temperatures[start:end],
             temp_limit=self.temperature_limits[start:end],

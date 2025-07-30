@@ -39,6 +39,8 @@ class DataGraph(DataBox):
         # Connect matplotlib pick event for dot clicks
         self.figure.canvas.mpl_connect('pick_event', self.on_canvas_click)
 
+
+
     def update_graph(self, temperature_data):
         """ Update the graph with new temperature data """
         self.clear_graph()
