@@ -14,14 +14,23 @@ from variables import Variables
 import tkinter as tk
 from tkinter import ttk
 
+import numpy as np
+
 from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
 
 
 class Results(DataBox):
     """ Visualizer for displaying data """
 
     GRAPH_COLOR = "#2a9d8f"
+
+    BIN_EDGES = np.linspace(0, 500, 31)
+    LOG_EDGES = np.linspace(0, 7.5, 31)
+    VMAX = 0.25
+    NUM_FRAMES = 30
 
     def __init__(self, root):
         super().__init__(root, "Analysis Results")
@@ -32,10 +41,10 @@ class Results(DataBox):
         self.buttons_frame = ttk.Frame(self.box)
         self.buttons_frame.pack(fill="x", pady=Variables.NOPAD_PAD)
 
-        self.area_distribution_button = ttk.Button(self.buttons_frame, text="Area Distribution")
+        self.area_distribution_button = ttk.Button(self.buttons_frame, text="Area")
         self.area_distribution_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
 
-        self.average_area_button = ttk.Button(self.buttons_frame, text="Average Area")
+        self.average_area_button = ttk.Button(self.buttons_frame, text="Mean Area")
         self.average_area_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
 
         self.density_button = ttk.Button(self.buttons_frame, text="Density")
@@ -50,6 +59,12 @@ class Results(DataBox):
         self.contours_button = ttk.Button(self.buttons_frame, text="Contours")
         self.contours_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
 
+        self.heatmap_button = ttk.Button(self.buttons_frame, text="Heatmap")
+        self.heatmap_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
+
+        self.log_button = ttk.Button(self.buttons_frame, text="Log Heatmap")
+        self.log_button.pack(side="left", padx=Variables.PAD_NOPAD, pady=Variables.PAD_NOPAD)
+
 
         self.graph_frame = ttk.Frame(self.box)
         self.graph_frame.pack(fill="both", expand=True)
@@ -60,6 +75,8 @@ class Results(DataBox):
         self.canvas = FigureCanvasTkAgg(self.figure, master=self.graph_frame)
         self.canvas_widget = self.canvas.get_tk_widget()
         self.canvas_widget.pack(fill="both", expand=True)
+
+        self.colorbar = None
 
 
     def line(self, y: list[float], label: str):
@@ -100,71 +117,78 @@ class Results(DataBox):
         self.canvas.draw()
 
 
-    def clear_graph(self):
-        """ Clear the graph """
-        self.ax.clear()
+    def heatmap(self,
+                data: list[list[float]],
+                title: str = "Area Distribution Over Time",
+                ylabel: str = "Area Distribution",
+                bin_edges = BIN_EDGES):
+        """ Plots heatmap of area distributions """
+        self.clear_graph()
+
+        heatmap_data = []
+        means = []
+        medians = []
+
+        to_index = min(Results.NUM_FRAMES, len(data))
+
+        for frame in data[: to_index]:
+            hist, _ = np.histogram(frame, bins=bin_edges)
+            total = hist.sum()
+            proportions = hist / total if total > 0 else np.zeros_like(hist)
+            heatmap_data.append(proportions)
+
+            # store stats
+            means.append(np.mean(frame))
+            medians.append(np.median(frame))
+
+        # convert to heatmap matrix
+        heatmap_matrix = np.array(heatmap_data).T
+
+        # plot heatmap
+        cmap = plt.cm.viridis
+        im = self.ax.imshow(
+            heatmap_matrix,
+            aspect='auto',
+            origin='lower',
+            extent=(0, to_index, float(bin_edges[0]), float(bin_edges[-1])),
+            cmap=cmap,
+            vmin=0,
+            vmax=Results.VMAX
+        )
+
+        # plot mean and median dots
+        x_vals = np.arange(to_index) + 0.5
+        self.ax.plot(x_vals, means, 'ro', label='Mean')
+        self.ax.plot(x_vals, medians, 'bo', label='Median')
+
+        self.ax.set_xlabel("Time Frame")
+        self.ax.set_ylabel(ylabel)
+        self.ax.set_title(title)
+
+        # add colorbar
+        if self.colorbar is not None:
+            self.colorbar = self.figure.colorbar(im, ax=self.ax, label="Proportion of Ice Crystals")
+
         self.canvas.draw()
 
 
-"""
+    def log_heatmap(self, data:list[list[float]]):
+        """ Plots log heatmap of area distributions """
+        self.clear_graph()
+
+        log_data = [np.log(frame) for frame in data]
+
+        self.heatmap(log_data, title="Log(Area) Distribution Over Time", ylabel="Log(Area) Bin", bin_edges=Results.LOG_EDGES)
 
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+    def clear_graph(self):
+        """ Clear the graph """
+        self.ax.clear()
 
-# === CONFIGURATION ===
-BIN_EDGES = np.linspace(0, 7.5, 31)  # 30 bins between 0 and 7.5
-VMAX = 0.25  # 30% max for heatmap scale
-NUM_FRAMES = 30  # Number of time frames to consider
+        if self.colorbar is not None:
+            self.colorbar.remove()
+            self.colorbar = None
 
-# === LOAD DATA ===
-
-# === HEATMAP FUNCTION ===
-def heatmap(filepath: str):
-    df = pd.read_excel(filepath)
-
-    heatmap_data = []
-    means = []
-    medians = []
-
-    for col in df.columns[:NUM_FRAMES]:
-        data = np.log(df[col].dropna())
-
-        # Compute histogram
-        hist, _ = np.histogram(data, bins=BIN_EDGES)
-        total = hist.sum()
-        proportions = hist / total if total > 0 else np.zeros_like(hist)
-        heatmap_data.append(proportions)
-
-        # Store stats
-        means.append(data.mean())
-        medians.append(np.median(data))
-
-    # Convert to heatmap matrix
-    heatmap_matrix = np.array(heatmap_data).T
-
-    # === PLOT HEATMAP ===
-    plt.figure(figsize=(12, 6))
-    cmap = plt.cm.viridis
-
-    im = plt.imshow(heatmap_matrix, aspect='auto', origin='lower',
-                    extent=[0, NUM_FRAMES, BIN_EDGES[0], BIN_EDGES[-1]],
-                    cmap=cmap, vmin=0, vmax=VMAX)
-
-    # Plot mean and median dots
-    x_vals = np.arange(NUM_FRAMES) + 0.5  # Center dots within each frame
-    plt.plot(x_vals, means, 'ro', label='Mean')
-    plt.plot(x_vals, medians, 'bo', label='Median')
-    plt.colorbar(im, label='Proportion of Ice Crystals')
-    plt.xlabel("Time Frame")
-    plt.ylabel("Log(Area) Bin")
-    plt.title("Log(Area) Distribution Over Time")
-    plt.tight_layout()
-    plt.show()
-
-for i in range(5):
-    heatmap(f"data{i+1}.xlsx")  # Adjust file names as needed
+        self.canvas.draw()
 
 
-"""
