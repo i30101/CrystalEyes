@@ -197,7 +197,6 @@ class Gui:
         )
 
 
-
         # results viewer configs
         self.results.average_area_button.config(command=self.average_area)
         self.results.area_distribution_button.config(command=self.area_distribution)
@@ -205,6 +204,8 @@ class Gui:
         self.results.coverage_button.config(command=self.coverage)
         self.results.ratio_button.config(command=self.ratio)
         self.results.contours_button.config(command=self.contours)
+        self.results.heatmap_button.config(command=self.heatmap)
+        self.results.log_button.config(command=self.log_heatmap)
 
 
 
@@ -622,6 +623,34 @@ class Gui:
             return
 
         self.results.line(self.linkam_data_file.data[7], "Number of Contours")
+
+
+    def heatmap(self):
+        """ User wants to see heatmap of area distribution """
+
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.heatmap(self.linkam_data_file.image_areas)
+
+
+    def log_heatmap(self):
+        """ User wants to see log heatmap of area distribution """
+
+        if self.linkam_data_file is None:
+            self.console.error("No LDF file loaded")
+            return
+
+        if self.linkam_data_file.data is None:
+            self.console.error("Data not processed yet")
+            return
+
+        self.results.log_heatmap(self.linkam_data_file.image_areas)
 
 
     def analyze_and_export(self):
