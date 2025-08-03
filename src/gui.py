@@ -36,7 +36,7 @@ from datagraph import DataGraph
 from analyze import AnalyzeBox
 from results import Results
 
-from reader import LinkamDataReader
+from parser import LinkamDataParser
 
 
 windll.shcore.SetProcessDpiAwareness(1)
@@ -245,7 +245,7 @@ class Gui:
         if not filepath:
             return
 
-        self.linkam_data_file = LinkamDataReader.extract_data(filepath)
+        self.linkam_data_file = LinkamDataParser.extract_data(filepath)
 
         self.media.show_media(self.linkam_data_file.raw_images)
 
