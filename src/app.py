@@ -3,7 +3,7 @@ Andrew Kim
 
 27 June 2025
 
-Version 1.0.0
+Version 2.0.0
 
 CrystalEyes: A Python application for analyzing images of nano-ice crystals.
 This app automates the extraction of ice crystal features, such as size and frequency

@@ -3,7 +3,7 @@ Andrew Kim
 
 1 July 2025
 
-Version 1.0.0
+Version 2.0.0
 
 Media manager
 """
