@@ -104,3 +104,67 @@ class Results(DataBox):
         """ Clear the graph """
         self.ax.clear()
         self.canvas.draw()
+
+
+"""
+
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# === CONFIGURATION ===
+BIN_EDGES = np.linspace(0, 7.5, 31)  # 30 bins between 0 and 7.5
+VMAX = 0.25  # 30% max for heatmap scale
+NUM_FRAMES = 30  # Number of time frames to consider
+
+# === LOAD DATA ===
+
+# === HEATMAP FUNCTION ===
+def heatmap(filepath: str):
+    df = pd.read_excel(filepath)
+
+    heatmap_data = []
+    means = []
+    medians = []
+
+    for col in df.columns[:NUM_FRAMES]:
+        data = np.log(df[col].dropna())
+
+        # Compute histogram
+        hist, _ = np.histogram(data, bins=BIN_EDGES)
+        total = hist.sum()
+        proportions = hist / total if total > 0 else np.zeros_like(hist)
+        heatmap_data.append(proportions)
+
+        # Store stats
+        means.append(data.mean())
+        medians.append(np.median(data))
+
+    # Convert to heatmap matrix
+    heatmap_matrix = np.array(heatmap_data).T
+
+    # === PLOT HEATMAP ===
+    plt.figure(figsize=(12, 6))
+    cmap = plt.cm.viridis
+
+    im = plt.imshow(heatmap_matrix, aspect='auto', origin='lower',
+                    extent=[0, NUM_FRAMES, BIN_EDGES[0], BIN_EDGES[-1]],
+                    cmap=cmap, vmin=0, vmax=VMAX)
+
+    # Plot mean and median dots
+    x_vals = np.arange(NUM_FRAMES) + 0.5  # Center dots within each frame
+    plt.plot(x_vals, means, 'ro', label='Mean')
+    plt.plot(x_vals, medians, 'bo', label='Median')
+    plt.colorbar(im, label='Proportion of Ice Crystals')
+    plt.xlabel("Time Frame")
+    plt.ylabel("Log(Area) Bin")
+    plt.title("Log(Area) Distribution Over Time")
+    plt.tight_layout()
+    plt.show()
+
+for i in range(5):
+    heatmap(f"data{i+1}.xlsx")  # Adjust file names as needed
+
+
+"""
