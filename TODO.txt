@@ -1,7 +1,4 @@
-Project level
-TODO edit README
-
-
-App level
-TODO add setup script
-TODO update options filepath
+TODO update README
+TODO add analyzed data extractor
+TODO compile exe
+TODO test exe
