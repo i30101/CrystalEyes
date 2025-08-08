@@ -9,9 +9,9 @@
 ![python-versions](https://img.shields.io/badge/python-3.9_%7C_3.10_%7C_3.11_%7C_3.12-limegreen)
 ![cellpose-version](https://img.shields.io/badge/cellpose-3.0.10-red)
 ![cellpose-version](https://img.shields.io/badge/NumPy-1.26-yellow)
-[![Licence: MIT](https://img.shields.io/github/license/i30101/CrystalEyes-v1.0.0)](https://github.com/i30101/CrystalEyes-v1.0.0/blob/master/LICENSE)
-![issues](https://img.shields.io/github/issues/i30101/CrystalEyes-v1.0.0)
-[![repo size](https://img.shields.io/github/repo-size/i30101/CrystalEyes-v1.0.0)](https://github.com/i30101/CrystalEyes-v1.0.0/)
+[![Licence: MIT](https://img.shields.io/github/license/i30101/CrystalEyes)](https://github.com/i30101/CrystalEyes/blob/master/LICENSE)
+![issues](https://img.shields.io/github/issues/i30101/CrystalEyes)
+[![repo size](https://img.shields.io/github/repo-size/i30101/CrystalEyes)](https://github.com/i30101/CrystalEyes/)
 <br><br>
 
 
