@@ -29,6 +29,9 @@ class Options:
             "Px": Variables.DEFAULT_PX,
             "Um": Variables.DEFAULT_UM,
             "Scale": Variables.DEFAULT_SCALE,
+            "HistogramStart": Variables.HISTOGRAM_START,
+            "HistogramEnd": Variables.HISTOGRAM_END,
+            "HistogramBins": Variables.HISTOGRAM_BINS,
             "SaveProcessed": 1,
             "SaveRaw": 1,
             "OpenFullscreen": 0
@@ -97,6 +100,21 @@ class Options:
         return self.options.get("OpenFullscreen", 0)
 
 
+    def get_histogram_start(self) -> int:
+        """ Returns histogram start value """
+        return self.options["HistogramStart"]
+
+
+    def get_histogram_end(self) -> int:
+        """ Returns histogram end value """
+        return self.options["HistogramEnd"]
+
+
+    def get_histogram_bins(self) -> int:
+        """ Returns histogram bins value """
+        return self.options["HistogramBins"]
+
+
     def set_theme(self, new_theme: str):
         """ Sets theme for the application """
         self.options["Theme"] = new_theme
@@ -135,4 +153,19 @@ class Options:
     def set_open_fullscreen(self, new_fullscreen: bool):
         """ Sets preference for opening in fullscreen """
         self.options["OpenFullscreen"] = new_fullscreen
+        self.write_options()
+
+    def set_histogram_start(self, new_start: int):
+        """ Sets histogram start """
+        self.options["HistogramStart"] = new_start
+        self.write_options()
+
+    def set_histogram_end(self, new_end: int):
+        """ Sets histogram end """
+        self.options["HistogramEnd"] = new_end
+        self.write_options()
+
+    def set_histogram_bins(self, new_bins: int):
+        """ Sets histogram bins """
+        self.options["HistogramBins"] = new_bins
         self.write_options()

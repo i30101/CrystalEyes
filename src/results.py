@@ -27,7 +27,6 @@ class Results(DataBox):
 
     GRAPH_COLOR = "#2a9d8f"
 
-    BIN_EDGES = np.linspace(0, 500, 31)
     LOG_EDGES = np.linspace(0, 7.5, 31)
     VMAX = 0.25
     NUM_FRAMES = 30
@@ -35,7 +34,9 @@ class Results(DataBox):
     def __init__(self, root):
         super().__init__(root, "Analysis Results")
 
-        self.bins = 10
+        self.histogram_start = Variables.HISTOGRAM_START
+        self.histogram_end = Variables.HISTOGRAM_END
+        self.bins = Variables.HISTOGRAM_BINS
 
         # control buttons
         self.buttons_frame = ttk.Frame(self.box)
@@ -108,11 +109,13 @@ class Results(DataBox):
         self.ax.set_xlabel(label)
         self.ax.set_ylabel("Frequency")
 
+        bins = np.linspace(self.histogram_start, self.histogram_end, self.bins + 1)
+
         # plot histogram
-        self.ax.hist(data, bins=self.bins, color=Results.GRAPH_COLOR)
+        self.ax.hist(data, bins=bins, color=Results.GRAPH_COLOR)
 
         if data:
-            self.ax.set_xlim(min(data), max(data))
+            self.ax.set_xlim(self.histogram_start, self.histogram_end)
 
         self.canvas.draw()
 
@@ -121,8 +124,9 @@ class Results(DataBox):
                 data: list[list[float]],
                 title: str = "Area Distribution Over Time",
                 ylabel: str = "Area Distribution",
-                bin_edges = BIN_EDGES):
+                bin_edges = None):
         """ Plots heatmap of area distributions """
+
         self.clear_graph()
 
         heatmap_data = []
@@ -131,6 +135,9 @@ class Results(DataBox):
 
         to_index = min(Results.NUM_FRAMES, len(data))
 
+        if bin_edges is None:
+            bin_edges = np.linspace(self.histogram_start, self.histogram_end, self.bins + 1)
+
         for frame in data[: to_index]:
             hist, _ = np.histogram(frame, bins=bin_edges)
             total = hist.sum()
@@ -138,6 +145,7 @@ class Results(DataBox):
             heatmap_data.append(proportions)
 
             # store stats
+
             means.append(np.mean(frame))
             medians.append(np.median(frame))
 
@@ -161,6 +169,10 @@ class Results(DataBox):
         self.ax.plot(x_vals, means, 'ro', label='Mean')
         self.ax.plot(x_vals, medians, 'bo', label='Median')
 
+
+
+
+
         self.ax.set_xlabel("Time Frame")
         self.ax.set_ylabel(ylabel)
         self.ax.set_title(title)
@@ -178,7 +190,12 @@ class Results(DataBox):
 
         log_data = [np.log(frame) for frame in data]
 
-        self.heatmap(log_data, title="Log(Area) Distribution Over Time", ylabel="Log(Area) Bin", bin_edges=Results.LOG_EDGES)
+        log_start = 0 if self.histogram_start <= 0 else np.log(self.histogram_start)
+
+        self.heatmap(log_data,
+                     title="Log(Area) Distribution Over Time",
+                     ylabel="Log(Area) Bin",
+                     bin_edges=np.linspace(log_start, np.log(self.histogram_end), self.bins + 1))
 
 
     def clear_graph(self):

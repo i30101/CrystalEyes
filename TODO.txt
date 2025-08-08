@@ -1,4 +1,3 @@
 TODO update README
-TODO add analyzed data extractor
 TODO compile exe
 TODO test exe

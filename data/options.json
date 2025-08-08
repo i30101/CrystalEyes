@@ -6,5 +6,8 @@
     "Scale": 0.12366,
     "SaveProcessed": 1,
     "SaveRaw": 1,
-    "OpenFullscreen": 1
+    "OpenFullscreen": 1,
+    "HistogramStart": 0,
+    "HistogramEnd": 400,
+    "HistogramBins": 10
 }

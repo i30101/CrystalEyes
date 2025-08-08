@@ -53,11 +53,14 @@ class Nav1(ttk.Frame):
         self.filepath = tk.StringVar()
         self.filepath_label = ttk.Label(self, text="Opened file:")
         self.filepath_label.grid(row=0, column=2, padx=(15, 0), pady=10)
-        self.filepath_entry = ttk.Entry(self, textvariable=self.filepath, state="readonly", width=70)
+        self.filepath_entry = ttk.Entry(self, textvariable=self.filepath, state="readonly", width=65)
         self.filepath_entry.grid(row=0, column=3, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
 
-        self.export_frame = ttk.Button(self, text="Export Current Frame")
-        self.export_frame.grid(row=0, column=4, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
+        self.open_folder_button = ttk.Button(self, text="Open Folder")
+        self.open_folder_button.grid(row=0, column=4, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
+
+        self.export_frame = ttk.Button(self, text="Save Frame")
+        self.export_frame.grid(row=0, column=5, padx=Variables.PAD_NOPAD, pady=10, sticky="ew")
 
     def set_filepath(self, filepath: str):
         """ Sets the filepath in the entry box """

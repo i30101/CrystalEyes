@@ -13,6 +13,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from databox import DataBox
+from variables import Variables
 
 
 class AnalyzeBox(DataBox):
@@ -21,48 +22,62 @@ class AnalyzeBox(DataBox):
     def __init__(self, root):
         super().__init__(root, "Analysis")
 
-        self.box.grid_columnconfigure(0, weight=0)
-        self.box.grid_columnconfigure(1, weight=0)
-        self.box.grid_columnconfigure(2, weight=0)
-        self.box.grid_columnconfigure(3, weight=0)
-        self.box.grid_columnconfigure(4, weight=0)
+        self.box.grid_columnconfigure(0, weight=6)
+        self.box.grid_columnconfigure(1, weight=4)
 
-        self.LABEL_WIDTH = 10
-        self.ENTRY_WIDTH = 4
+        self.ENTRY_WIDTH = 3
 
-        # starting frame number
+
+        # left column
+        self.left_column = ttk.Frame(self.box)
+        self.left_column.grid(column=0, row=0, sticky="w")
+
+        self.starting_label = ttk.Label(self.left_column, text="Analyze frames ", width=12)
+        self.starting_label.grid(row=0, column=0, padx=Variables.PAD_NOPAD, pady=5, sticky="w")
+
         self.starting_frame = tk.IntVar()
-        self.starting_label = ttk.Label(self.box, text="Start frame", width=9)
-        self.starting_label.grid(row=0, column=0, padx=0, pady=5, sticky="w")
-        self.starting_entry = ttk.Entry(self.box, textvariable=self.starting_frame, width=self.ENTRY_WIDTH)
-        self.starting_entry.grid(row=0, column=1, padx=(5, 0), pady=5, sticky="w")
+        self.starting_entry = ttk.Entry(self.left_column, textvariable=self.starting_frame, width=self.ENTRY_WIDTH)
+        self.starting_entry.grid(row=0, column=1, padx=(3, 0), pady=5, sticky="w")
 
-        # ending frame number
+        self.to_label = ttk.Label(self.left_column, text="to", width=2)
+        self.to_label.grid(row=0, column=2, padx=Variables.PAD_NOPAD, pady=5, sticky="w")
+
         self.ending_frame = tk.IntVar()
-        self.ending_label = ttk.Label(self.box, text="End frame", width=8)
-        self.ending_label.grid(row=0, column=2, padx=(15, 0), pady=5, sticky="w")
-        self.ending_entry = ttk.Entry(self.box, textvariable=self.ending_frame, width=self.ENTRY_WIDTH)
-        self.ending_entry.grid(row=0, column=3, padx=(5, 0), pady=5, sticky="w")
+        self.ending_entry = ttk.Entry(self.left_column, textvariable=self.ending_frame, width=self.ENTRY_WIDTH)
+        self.ending_entry.grid(row=0, column=3, padx=(3, 0), pady=5, sticky="w")
 
-        # analyze button
-        self.analyze_button = ttk.Button(self.box, text="Analyze")
-        self.analyze_button.grid(row=0, column=4, padx=(20, 0), pady=5, sticky="ew")
+        self.histogram_label = ttk.Label(self.left_column, text="Histogram: from", width=13)
+        self.histogram_label.grid(row=1, column=0, padx=Variables.PAD_NOPAD, pady=5, sticky="w")
 
-        # export button
-        self.export_button = ttk.Button(self.box, text="Export")
-        self.export_button.grid(row=0, column=5, padx=(20, 0), pady=5, sticky="ew")
+        self.histogram_start = tk.IntVar(value=0)
+        self.bin_start_entry = ttk.Entry(self.left_column, textvariable=self.histogram_start, width=self.ENTRY_WIDTH)
+        self.bin_start_entry.grid(row=1, column=1, padx=(3, 0), pady=5, sticky="w")
 
+        self.to_histogram_label = ttk.Label(self.left_column, text="to", width=3)
+        self.to_histogram_label.grid(row=1, column=2, padx=Variables.PAD_NOPAD, pady=5, sticky="w")
 
-        # bin controls
-        self.bin_label = ttk.Label(self.box, text="Bins:", width=4)
-        self.bin_label.grid(row=0, column=6, padx=(30, 0), pady=5, sticky="w")
+        self.histogram_end = tk.IntVar(value=500)
+        self.bin_end_entry = ttk.Entry(self.left_column, textvariable=self.histogram_end, width=self.ENTRY_WIDTH)
+        self.bin_end_entry.grid(row=1, column=3, padx=(3, 0), pady=5, sticky="w")
 
-        self.bin_decrease = ttk.Button(self.box, text="-", width=2)
-        self.bin_decrease.grid(row=0, column=7, padx=(10, 0), pady=5, sticky="ew")
+        self.with_label = ttk.Label(self.left_column, text="µm² with", width=8)
+        self.with_label.grid(row=1, column=4, padx=Variables.PAD_NOPAD, pady=5, sticky="w")
 
         self.bins = tk.IntVar(value=10)
-        self.bin_entry = ttk.Entry(self.box, textvariable=self.bins, width=3, justify="center")
-        self.bin_entry.grid(row=0, column=8, padx=(10, 0), pady=5, sticky="ew")
+        self.bin_entry = ttk.Entry(self.left_column, textvariable=self.bins, width=self.ENTRY_WIDTH)
+        self.bin_entry.grid(row=1, column=5, padx=(3, 0), pady=5, sticky="w")
 
-        self.bin_increase = ttk.Button(self.box, text="+", width=2)
-        self.bin_increase.grid(row=0, column=9, padx=(10, 0), pady=5, sticky="ew")
+        self.bins_label = ttk.Label(self.left_column, text="bins", width=4)
+        self.bins_label.grid(row=1, column=6, padx=Variables.PAD_NOPAD, pady=5, sticky="w")
+
+
+        # right column
+
+        self.right_column = ttk.Frame(self.box)
+        self.right_column.grid(column=1, row=0, padx=10, sticky="e")
+
+        self.export_button = ttk.Button(self.right_column, text="Export", width=10)
+        self.export_button.grid(row=0, column=0, padx=Variables.PAD_NOPAD, ipadx=10, ipady=24, sticky="e")
+
+        self.analyze_button = ttk.Button(self.right_column, text="Analyze", width=10)
+        self.analyze_button.grid(row=0, column=1, padx=Variables.PAD_NOPAD, ipadx=10, ipady=24, sticky="e")

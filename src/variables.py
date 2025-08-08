@@ -53,6 +53,12 @@ class Variables:
     RIGHT_WIDTH = 1 - LEFT_WIDTH
 
 
+    """ Histogram defaults """
+    HISTOGRAM_START = 0
+    HISTOGRAM_END = 500
+    HISTOGRAM_BINS = 20
+
+
     """ Image and video formats """
     IMAGE_TYPES = [".jpg", ".png", ".jpeg", ".tiff", ".bmp"]
     VIDEO_TYPES = [".mp4", ".avi", ".mov", ".mkv"]

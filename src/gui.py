@@ -37,6 +37,7 @@ from analyze import AnalyzeBox
 from results import Results
 
 from parser import LinkamDataParser
+from reader import LinkamDataReader
 
 
 windll.shcore.SetProcessDpiAwareness(1)
@@ -138,6 +139,7 @@ class Gui:
         self.nav1.open_file_button.config(command=self.open_file)
         self.nav1.clear_button.config(command=self.clear_media)
         self.nav1.export_frame.config(command=self.export_current_frame)
+        self.nav1.open_folder_button.config(command=self.open_folder)
 
         # tab 2 configs
         self.nav2.reset_scale_button.config(command=self.reset_scale)
@@ -183,19 +185,14 @@ class Gui:
             'write',
             self.frame_entry_updated
         )
+        self.analyze_box.histogram_start.set(self.options.get_histogram_start())
+        self.analyze_box.histogram_start.trace_add('write', self.histogram_updated)
+        self.analyze_box.histogram_end.set(self.options.get_histogram_end())
+        self.analyze_box.histogram_end.trace_add('write', self.histogram_updated)
+        self.analyze_box.bins.set(self.options.get_histogram_bins())
+        self.analyze_box.bins.trace_add('write', self.histogram_updated)
         self.analyze_box.analyze_button.config(command=self.analyze)
         self.analyze_box.export_button.config(command=self.analyze_and_export)
-        self.analyze_box.bin_decrease.config(
-            command=lambda: self.analyze_box.bins.set(self.analyze_box.bins.get() - 1)
-        )
-        self.analyze_box.bins.trace_add(
-            'write',
-            self.bins_updated
-        )
-        self.analyze_box.bin_increase.config(
-            command=lambda: self.analyze_box.bins.set(self.analyze_box.bins.get() + 1)
-        )
-
 
         # results viewer configs
         self.results.average_area_button.config(command=self.average_area)
@@ -292,6 +289,30 @@ class Gui:
         pil_img.save(os.path.join(export_directory, f"frame_{current_frame_index}.jpg"), format="JPEG")
 
         self.console.update(f"Frame export to {export_directory} successful")
+
+
+    def open_folder(self):
+        """ Opens folder containing already exported data """
+
+        filepath = filedialog.askdirectory()
+
+        if not filepath:
+            return
+
+        try:
+            self.linkam_data_file = LinkamDataReader.extract_data(filepath)
+        except FileNotFoundError:
+            self.console.error("No analyzed data found in directory")
+            return
+
+        self.media.show_media(self.linkam_data_file.processed_images)
+
+        self.nav1.set_filepath(self.linkam_data_file.filepath)
+
+        self.data_graph.update_graph(self.linkam_data_file.temperatures)
+
+        # update console
+        self.console.update(f"{self.linkam_data_file.filepath} uploaded")
 
 
 
@@ -527,17 +548,27 @@ class Gui:
 
         return True
 
-    def bins_updated(self, *_):
+    def histogram_updated(self, *_):
         """ Number of bins was updated """
 
         try:
+            self.results.histogram_start = self.analyze_box.histogram_start.get()
+            self.results.histogram_end = self.analyze_box.histogram_end.get()
             self.results.bins = self.analyze_box.bins.get()
         except (ValueError, tk.TclError):
-            self.console.error("non-integer character in bin input")
+            self.console.error("non-integer character in histogram input")
             return
+
+        self.options.set_histogram_start(self.results.histogram_start)
+        self.options.set_histogram_end(self.results.histogram_end)
+        self.options.set_histogram_bins(self.results.bins)
 
         if self.analyze_box.bins.get() < 1:
             self.analyze_box.bins.set(1)
+
+        if self.analyze_box.histogram_start.get() >= self.analyze_box.histogram_end.get():
+            self.console.error("Histogram start must be less than end")
+            return
 
         if self.linkam_data_file is None or self.linkam_data_file.data is None:
             return
@@ -569,6 +600,8 @@ class Gui:
         if self.linkam_data_file.data is None:
             self.console.error("Data not processed yet")
             return
+
+        # TODO update here
 
         self.results.histogram(self.linkam_data_file.image_areas[self.media.media_viewer.current_frame.get()], "Area Distribution")
 
