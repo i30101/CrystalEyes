@@ -45,7 +45,8 @@ This is the latest and fully functional version of CrystalEyes. Previous version
 ### Full Release Schedule
 
 | Version  | Description                                                    | 
-|----------|----------------------------------------------------------------| 
+|----------|----------------------------------------------------------------|
+| `v2.0.0` | Final working version deployed                                 |
 | `v1.2.0` | Fully functioning user interface, parser, and analysis modules |
 | `v1.0.0` | Non-functioning beta testing for new user interface            |
 | `v0.9.0` | Non-functioning beta testing for Linkam Data File parser       |
@@ -67,7 +68,7 @@ Microsoft's Redistributable C++ Compiler (often installed through [Visual Studio
 > [!NOTE]
 > Python version `3.10.13` along with NumPy version `1.26.3` were used during testing, along with Miniconda3 as the interpreter.
 
-A full list of 
+A full list of Python dependencies can be found in `requirements.txt`.
 <br>
 
 
@@ -75,10 +76,17 @@ A full list of
 
 <br>
 
+1. Install a working Python version on your machine
+2. Create a working repository and do `git clone https://github.com/i30101/CrystalEyes.git`
+3. Add pip requirements with `pip install -m requirements.txt`
+4. Run `app.py`!
+
 
 ## Usage
 
 <br>
+
+The following variables can be extracted by the CrystalEyes software, which is exported in the `.xlsx` format. The default data format, which is contains the name of the original same, has columns each containing a single variable and each row being a single frame. There will also be a spreadsheet of image areas, with each column being a single frame and the cells in each column consisting of raw individual contour areas.
 
 
 ### List of LDF variables
