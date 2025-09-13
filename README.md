@@ -33,7 +33,7 @@ Version `1.0.0` introduces a new GUI and support for LDF files only. In contrast
 > [!WARNING]
 > Timestamp data is not available for this version. The app will not process timestamps from LDF files. The duration between each frame defaults to one minute.
 
-### Version 1.2.0: what's new
+### Version 2.0.0: what's new
 
 This is the latest and fully functional version of CrystalEyes. Previous versions of CrystalEyes are in beta and not optimized for performance or user experience. The features newly added in this version are:
 
