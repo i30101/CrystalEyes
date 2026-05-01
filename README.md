@@ -27,8 +27,8 @@ CrystalEyes uses Python and the Cellpose machine learning library to extract dat
 
 ## Changelog
 
-### Version 1.0.0: app rehaul
-Version `1.0.0` introduces a new GUI and support for LDF files only. In contrast to versions `0.8.0` and `0.9.0`, LDF support enables instant processing of images. You do not have to export images and video files from Linkam manually; the built-in binary parser does that instead. 
+### Version 2.0.0: app rehaul
+Version `2.0.0` introduces a new GUI and support for LDF files only. In contrast to versions `0.8.0` and `0.9.0`, LDF support enables instant processing of images. You do not have to export images and video files from Linkam manually; the built-in binary parser does that instead. 
 
 > [!WARNING]
 > Timestamp data is not available for this version. The app will not process timestamps from LDF files. The duration between each frame defaults to one minute.
