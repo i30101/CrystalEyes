@@ -5,7 +5,7 @@
 
 
 
-![version](https://img.shields.io/badge/release-v1.2.0-blue)
+![version](https://img.shields.io/badge/release-v2.0.0-blue)
 ![python-versions](https://img.shields.io/badge/python-3.9_%7C_3.10_%7C_3.11_%7C_3.12-limegreen)
 ![cellpose-version](https://img.shields.io/badge/cellpose-3.0.10-red)
 ![cellpose-version](https://img.shields.io/badge/NumPy-1.26-yellow)
@@ -56,12 +56,12 @@ This is the latest and fully functional version of CrystalEyes. Previous version
 
 
 ## Dependencies
-Unfortunately, CrystalEyes `v1.2.0` has highly specific dependencies. Most critical is Cellpose `3.0.10`, as the newer `4.0.6` is too-heavily GPU-reliant and requires Nvidia CUDA due to its larger neural network. The latest version of NumPy supported by Cellpose `3.0.10` is `1.26.4`, meaning Python versions `3.9`, `3.10`, `3.11`, or `3.12` are supported. 
+Unfortunately, CrystalEyes `v2.0.0` has highly specific dependencies. Most critical is Cellpose `3.0.10`, as the newer `4.0.6` is too-heavily GPU-reliant and requires Nvidia CUDA due to its larger neural network. The latest version of NumPy supported by Cellpose `3.0.10` is `1.26.4`, meaning Python versions `3.9`, `3.10`, `3.11`, or `3.12` are supported. 
 
 > [!CAUTION]
 > Python `3.13` does not support NumPy `1.26`. Please be aware of which Python version your system is using, as it may not support this software.
 
-CrystalEyes `1.2.0` was primarily tested on a system with 32 GB RAM with an integrated Intel processor/graphics chip (the graphics card was not used). Expect 1.8-2.5 GB of RAM use during operation; CPU usage will spike for each frame analysis as well.
+CrystalEyes `2.0.0` was primarily tested on a system with 32 GB RAM with an integrated Intel processor/graphics chip (the graphics card was not used). Expect 1.8-2.5 GB of RAM use during operation; CPU usage will spike for each frame analysis as well.
 
 Microsoft's Redistributable C++ Compiler (often installed through [Visual Studio Build Tools](https://visualstudio.microsoft.com/downloads/?q=build+tools)) may be required to install NumPy `1.26`. If you are unable to download the C++ compiler, consider using an alternate Python interpreter and package manager (such as Miniconda). 
 
